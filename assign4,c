@@ -1,0 +1,182 @@
+#include <stdio.h> 
+#include <stdlib.h> 
+struct node 
+{ 
+ int prn; 
+ char name[50]; 
+ struct node *next; 
+}; 
+struct node *head = NULL; 
+struct node* createNode() 
+{ 
+ struct node *temp; 
+ temp = (struct node*)malloc(sizeof(struct node));  printf("Enter PRN: "); 
+ scanf("%d", &temp->prn); 
+ printf("Enter Name: "); 
+ scanf("%s", temp->name); 
+ temp->next = NULL; 
+ return temp; 
+} 
+void addPresident() 
+{ 
+ struct node *temp = createNode();
+ if (head == NULL) 
+ { 
+ head = temp; 
+ } 
+ else 
+ { 
+ temp->next = head; 
+ head = temp; 
+ } 
+} 
+void addSecretary() 
+{ 
+ struct node *temp = createNode();  if (head == NULL) 
+ { 
+ head = temp; 
+ } 
+ else 
+ { 
+ struct node *p = head; 
+ while (p->next != NULL)  { 
+ p = p->next; 
+ } 
+ p->next = temp; 
+ } 
+}
+void addMember() 
+{ 
+ struct node *temp = createNode();  if (head == NULL) 
+ { 
+ head = temp; 
+ } 
+ else 
+ { 
+ struct node *p = head; 
+ while (p->next != NULL)  { 
+ p = p->next; 
+ } 
+ p->next = temp; 
+ } 
+} 
+void deletePresident() 
+{ 
+ if (head == NULL) 
+ { 
+ printf("List Empty\n");  return; 
+ } 
+ struct node *temp = head;  head = head->next; 
+ free(temp);
+} 
+void deleteSecretary() 
+{ 
+ if (head == NULL) 
+ { 
+ printf("List Empty\n");  return; 
+ } 
+ if (head->next == NULL)  { 
+ free(head); 
+ head = NULL; 
+ return; 
+ } 
+ struct node *p = head; 
+ while (p->next->next != NULL)  { 
+ p = p->next; 
+ } 
+ free(p->next); 
+ p->next = NULL; 
+} 
+void deleteMember() 
+{ 
+ int prn; 
+ printf("Enter PRN to delete: ");  scanf("%d", &prn);
+ if (head == NULL) 
+ { 
+ printf("List Empty\n"); 
+ return; 
+ } 
+ struct node *temp = head; 
+ struct node *prev = NULL; 
+ while (temp != NULL && temp->prn != prn)  { 
+ prev = temp; 
+ temp = temp->next; 
+ } 
+ if (temp == NULL) 
+ { 
+ printf("Member not found\n"); 
+ return; 
+ } 
+ if (prev == NULL) 
+ { 
+ head = temp->next; 
+ } 
+ else 
+ { 
+ prev->next = temp->next; 
+ } 
+ free(temp);
+} 
+void display() 
+{ 
+ if (head == NULL) 
+ { 
+ printf("List Empty\n"); 
+ return; 
+ } 
+ printf("PRN\tName\n"); 
+ struct node *p = head; 
+ while (p != NULL) 
+ { 
+ printf("%d\t%s\n", p->prn, p->name);  p = p->next; 
+ } 
+} 
+void countMembers() 
+{ 
+ int count = 0; 
+ struct node *p = head; 
+ while (p != NULL) 
+ { 
+ count++; 
+ p = p->next; 
+ } 
+ printf("Total Members = %d\n", count); }
+int main() 
+{ 
+ int ch; 
+ while (1) 
+ { 
+ printf("\n--MENU--\n");  printf("1. Add President\n");  printf("2. Add Secretary\n");  printf("3. Add Member\n");  printf("4. Delete President\n");  printf("5. Delete Secretary\n");  printf("6. Delete Member\n");  printf("7. Display Members\n");  printf("8. Count Members\n");  printf("9. Exit\n"); 
+ printf("Enter your choice: ");  scanf("%d", &ch); 
+ switch (ch) 
+ { 
+ case 1: 
+ addPresident(); 
+ break; 
+ case 2: 
+ addSecretary(); 
+ break;
+ case 3: 
+ addMember(); 
+ break; 
+ case 4: 
+ deletePresident();  break; 
+ case 5: 
+ deleteSecretary();  break; 
+ case 6: 
+ deleteMember(); 
+ break; 
+ case 7: 
+ display(); 
+ break; 
+ case 8: 
+ countMembers(); 
+ break; 
+ case 9: 
+ exit(0); 
+ default: 
+ printf("Invalid Choice\n");
+ } 
+ } 
+ return 0; 
+} 
